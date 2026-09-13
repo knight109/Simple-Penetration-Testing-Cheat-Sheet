@@ -1,4 +1,4 @@
-# Remote Code Execution (Reverse Shell)
+# Reverse Shell
 
 ## 1. Executive Summary
 A Remote Code Execution (RCE) vulnerability was identified in the application, allowing an attacker to execute arbitrary operating system commands and successfully establish a reverse shell. 
