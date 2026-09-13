@@ -1,0 +1,53 @@
+# 5W1H
+Use 5W1H to establish the basic context of the penetration test before testing begins.
+
+## What
+What is being tested?
+```text
+Target:
+System:
+Application:
+Services:
+```
+
+## Why
+Why is the penetration test being performed?
+```text
+Purpose:
+Objectives:
+```
+
+## Who
+Who is involved in the penetration test?
+```text
+Client:
+System Owner:
+Tester:
+Technical Contact:
+Emergency Contact:
+```
+
+## Where
+Where will the testing take place?
+```text
+Target Environment:
+Network:
+Location:
+```
+
+## When
+When will the penetration test be performed?
+```text
+Start:
+End:
+Allowed Hours:
+```
+
+## How
+How will the penetration test be conducted?
+```text
+Testing Type:
+Testing Methodology:
+Allowed Techniques:
+Restrictions:
+```
