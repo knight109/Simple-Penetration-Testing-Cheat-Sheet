@@ -2,7 +2,6 @@
 ## 1. Executive Summary
 A Cross-Site Scripting (XSS) vulnerability was identified in the application where user-controlled input is reflected or stored without proper output encoding.
 An attacker may be able to execute arbitrary JavaScript in the context of another user's browser.
----
 
 ## 2. Description
 Cross-Site Scripting (XSS) occurs when an application includes untrusted user input in a web page without properly validating or encoding the output.
@@ -29,7 +28,7 @@ q
 https://example.com/search?q=<script>alert(document.domain)</script>
 ```
 If the payload is executed by the browser instead of being safely encoded, the parameter may be vulnerable to XSS.
----
+
 
 ## 3. Impact
 Successful exploitation may allow an attacker to:
@@ -41,7 +40,7 @@ Successful exploitation may allow an attacker to:
 - Redirect users to malicious content.
 - Abuse functionality available to the victim.
 The actual impact depends on the application's functionality and the privileges of the affected user.
----
+
 
 ## 4. Recommendation
 Recommended remediation:
@@ -54,7 +53,7 @@ Recommended remediation:
 - Sanitize HTML input when HTML content is intentionally supported.
 - Do not rely solely on client-side validation.
 - Review existing stored data for previously injected payloads.
----
+
 
 ## 5. CVSS
 **CVSS Version:** 3.1
