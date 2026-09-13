@@ -1,0 +1,71 @@
+# Malicious Web Shell
+
+## 1. Executive Summary
+A Malicious Web Shell was identified on the web server, indicating that an attacker has successfully uploaded or injected an executable script into the application's web root. 
+
+This script acts as a persistent backdoor, allowing the attacker to execute arbitrary operating system commands, manage files, and interact with the underlying server directly through standard HTTP/HTTPS web requests. The presence of a web shell signifies a severe security breach and full system compromise.
+
+## 2. Description
+A web shell is a malicious script (often written in PHP, ASP, JSP, or Node.js) that attackers deploy to a compromised web server to maintain persistent access. Unlike a reverse shell, a web shell does not require the server to initiate an outbound connection; instead, it relies on the web server's normal inbound HTTP traffic, allowing it to easily bypass egress firewalls.
+
+The deployment of a web shell is typically the result of an unmitigated vulnerability, such as an Insecure File Upload, Remote Code Execution (RCE), or SQL Injection (e.g., using `INTO OUTFILE`).
+
+**Category:** OWASP Top 10 - A03:2025 Injection / A05:2025 Security Misconfiguration
+
+**URL:**
+```text
+[https://example.com/assets/images/shell.php](https://example.com/assets/images/shell.php)
+```
+
+**Method:**
+```text
+GET / POST
+```
+
+**Parameter:**
+```text
+cmd
+```
+
+### Example
+An attacker exploits a file upload vulnerability to place a simple one-line PHP web shell onto the server:
+
+```php
+<?php system($_REQUEST['cmd']); ?>
+```
+
+Once the file is successfully placed in a publicly accessible directory, the attacker can execute arbitrary operating system commands simply by browsing to the URL with the desired command in the parameter:
+
+```http
+GET /assets/images/shell.php?cmd=cat+/etc/passwd HTTP/1.1
+Host: example.com
+```
+
+The web server processes the PHP file, executes the `cat /etc/passwd` command, and returns the output directly in the HTTP response to the attacker.
+
+## 3. Impact
+The presence of a web shell allows an attacker to:
+- Maintain persistent, stealthy administrative access to the compromised server.
+- Execute arbitrary operating system commands via standard web traffic (HTTP/HTTPS).
+- Browse, download, modify, or delete sensitive files, source code, and configuration files.
+- Directly interact with internal databases using credentials found in application configuration files.
+- Use the server as a pivot point to map and attack the internal network.
+- Deploy additional malware, ransomware, or cryptocurrency miners.
+- Deface the website or serve malicious content to legitimate users.
+
+## 4. Recommendation
+Recommended remediation:
+- **Immediate Incident Response:** Isolate the affected server immediately to prevent further lateral movement, capture volatile memory for forensics, and remove the malicious script.
+- **Identify the Root Cause:** Investigate access logs to determine exactly how the web shell was uploaded (e.g., finding the insecure file upload endpoint) and patch the underlying vulnerability.
+- **Disable Script Execution:** Configure the web server (e.g., via `.htaccess` in Apache or `location` blocks in Nginx) to prevent the execution of server-side scripts in directories meant only for static assets and uploads.
+- **File Integrity Monitoring (FIM):** Implement FIM solutions to alert administrators whenever new executable files are created or modified within the web root.
+- **Implement Least Privilege:** Ensure the web server service account has restricted permissions, preventing it from writing to unauthorized directories or executing sensitive system binaries.
+- **Deploy a WAF:** Utilize a Web Application Firewall to detect and block common web shell signatures and command injection payloads.
+
+## 5. CVSS
+**CVSS Version:** 3.1
+**Score:** 9.8 — Critical
+**Vector:**
+```text
+CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H
+```
